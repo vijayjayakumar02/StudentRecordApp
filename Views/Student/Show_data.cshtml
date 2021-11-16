@@ -1,0 +1,44 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Show_data</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <div class="container" style="margin-top:3%">
+        <a href="#" class="btn btn-info" onclick="AddNewStudent(0)">Add New Student</a> <br /><br />
+
+        <table class="table table-striped" id="tbldata">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Age</th>
+                    <th>Action(Edit)</th>
+                    <th>Action(Delete)</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script>
+        $(function () {
+            $.get("/Student/Get_data", {}, function (data) {
+
+                var row;
+                $.each(data, function (i, v) {
+                    row += "<tr><td>" + v.StudentId + "</td><td>" + v.StudentName + "</td><td>" + v.StudentAge + "</td></tr>";
+                });
+                $("#tbldata").append(row);
+            })
+        })
+    </script>
+</body>
+</html>
