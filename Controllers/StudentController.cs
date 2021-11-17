@@ -59,5 +59,57 @@ namespace StudentApplication1.Controllers
             }
             return Json(studentlist, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult update_data(int id)
+        {
+            return View();
+        }
+
+        public JsonResult Getdatabyid(int id)
+        {
+            DataSet ds = db.Getdatabyid(id);
+            List<Student> studentlist = new List<Student>();
+            foreach (DataRow dr in ds.Tables[0].Rows)
+            {
+                studentlist.Add(new Student
+                {
+                    StudentName = dr["StudentName"].ToString(),
+                    StudentAge = Convert.ToInt32(dr["StudentAge"])
+                });
+            }
+            return Json(studentlist, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Update_Student(Student stud)
+        {
+            string result = string.Empty;
+            try
+            {
+                db.update_data(stud);
+                result = "updated";
+            }
+            catch (Exception e)
+            {
+                result = "Failed";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Delete_Student(int id)
+        {
+            string result = string.Empty;
+            try
+            {
+                db.deleterecord(id);
+                result = "deleted";
+            }
+            catch (Exception e)
+            {
+                result = "Failed";
+            }
+
+            return RedirectToAction("Show_data");
+        }
     }
 }

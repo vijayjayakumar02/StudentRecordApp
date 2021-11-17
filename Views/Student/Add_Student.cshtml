@@ -19,11 +19,17 @@
             <div class="col-sm-8">
                 <div class="form-group">
                     <label>Name</label>
-                    <input type="text" id="studentname" class="form-control" />
+                    <input type="text" id="studentname" class="form-control" required/>
+                    <h5 id="usercheck" style="color: red;">
+                        **Username is missing
+                    </h5>
                 </div>
                 <div class="form-group">
                     <label>Age</label>
-                    <input type="number" id="studentage" class="form-control" />
+                    <input type="number" id="studentage" class="form-control" required />
+                    <h5 id="agecheck" style="color: red;">
+                        **Age is missing
+                    </h5>
                 </div>
                 <div class="form-group">
                     <input type="button" class="btn btn-success" id="btnsubmit" value="Submit" />
@@ -34,7 +40,66 @@
     </div>
     <script>
         $(function () {
+            $('#usercheck').hide();
+            let usernameError = true;
+            $('#studentname').keyup(function () {
+                validateUsername();
+            });
+
+            function validateUsername() {
+                let usernameValue = $('#studentname').val();
+                if (usernameValue.length == '') {
+                    $('#usercheck').show();
+                    usernameError = false;
+                    return false;
+                }
+                else if ((usernameValue.length < 3) ||
+                    (usernameValue.length > 10)) {
+                    $('#usercheck').show();
+                    $('#usercheck').html
+                        ("**length of username must be between 3 and 10");
+                    usernameError = false;
+                    return false;
+                }
+                else {
+                    $('#usercheck').hide();
+                }
+            }
+
+            $('#agecheck').hide();
+            let ageError = true;
+
+
+
+            $('#age').keyup(function () {
+                validateAge();
+            });
+
+
+
+            function validateAge() {
+                let ageValue = $('#studentage').val();
+                if (ageValue.length == '') {
+                    $('#agecheck').show();
+                    ageError = false;
+                }
+                else if ((ageValue < 18) || (ageValue > 60)) {
+                    $('#agecheck').show();
+                    $('#agecheck').html
+                        ("** age must be greater than 18 and less than 60")
+                    ageError = false;
+                }
+                else {
+                    $('#agecheck').hide();
+                    ageError = true;
+                }
+            }
+
+
             $("#btnsubmit").click(function () {
+                validateUsername();
+                validateAge();
+                if ((usernameError == true) && (ageError == true)) {}
                 $.ajax({
                     type: "POST",
                     url: "/Student/Add_Student",

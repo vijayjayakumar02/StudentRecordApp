@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>update_data</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input type="text" id="studentname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <input type="number" id="studentage" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <input type="button" class="btn btn-success" id="btnsubmit" value="Submit" />
+                </div>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var id = @Request.QueryString["id"]
+            $.get("/Student/Getdatabyid", { id: id }, function (data) {
+                $("#studentname").val(data[0].StudentName);
+                $("#studentage").val(data[0].StudentAge);
+            });
+            $("#btnsubmit").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Student/Update_Student",
+                    data: {
+                        StudentId: id,
+                        StudentName: $("#studentname").val(),
+                        StudentAge: $("#studentage").val()
+                    },
+                    success: function (data) {
+                        alert(data);
+                    }
+                })
+            });
+        })
+    </script>
+</body>
+</html>

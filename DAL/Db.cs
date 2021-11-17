@@ -55,5 +55,16 @@ namespace StudentApplication1.DAL
             com.ExecuteNonQuery();
             con.Close();
         }
+
+        public DataSet Getdatabyid(int id)
+        {
+            SqlCommand com = new SqlCommand("Sp_StudentbyId", con);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@ID", id);
+            SqlDataAdapter da = new SqlDataAdapter(com);
+            DataSet ds = new DataSet();
+            da.Fill(ds);
+            return ds;
+        }
     }
 }
